@@ -1,0 +1,22 @@
+version: '3'
+services:
+  database:
+    container_name: postgres-csc2020
+    image: postgres:latest
+    ports:
+      - "5435:5432"
+    volumes:
+      - /Users/badmanfadil/data/postgres/csc2020:/data/postgres
+    env_file:
+      - csc2020.env
+
+  web:
+    container_name: nginx-csc2020
+    build:
+      context: .
+      dockerfile: nginx-primer/Dockerfile
+    ports:
+     - 80:80
+     - 443:443
+    extra_hosts:
+     - "app-server:10.9.82.227"

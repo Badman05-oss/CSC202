@@ -1,0 +1,86 @@
+from typing import final
+
+
+class Graph_weighted:
+    def _init_(self, edges):
+        self.edges = edges
+        self.graph_dict={}
+        self.weight_dict={}
+        
+    
+        for start, end, weight in self.edges:
+            if(start in self.graph_dict and end not in self.graph_dict[start]):
+                self.graph_dict[start].append(end)
+                self.weight_dict[start].append(weight)
+            else:
+                self.graph_dict[start] = [end]
+                self.weight_dict[start] = [weight]
+                
+    def get_path(self,start,end,path=[],final_path=[],weights=[],final_weights=[]):
+        path = path +[start]
+        
+    
+        if(start==end):
+            final_path.append(path)
+            final_weights.append(weights)
+        
+        if(start not in self.graph_dict):
+            return []
+        
+        for loc in self.graph_dict[start]:
+            if(loc not in path):
+               check = self.graph_dict[start].index(loc)
+               weights = weights +[self.weight_dict[start][check]]
+               self.get_path(loc,end,path,final_path,weights,final_weights)
+        
+
+        return final_weights
+    
+    
+        
+                
+            
+            
+    
+
+routes = [
+    ("Lagos","Kwara",6),
+    ("Lagos","Ogun",5),
+    ("Lagos","Ekiti",8),
+    ("Ogun","Lagos",5),
+    ("Ogun","Ekiti",7),
+    ("Ekiti","Ogun",7),
+    ("Ekiti","Lagos",8),
+    ("Ekiti","Osun",4),
+    ("Ondo","Ekiti",5),
+    ("Ondo","Edo",5),
+    ("Edo","Kwara",3),
+    ("Edo","Osun",3),
+    ("Edo","Ondo",5),
+    ("Osun","Ekiti",4),
+    ("Osun","Edo",3),
+    ("Kwara","Lagos",6),
+    ("Kwara","Edo",3)
+]
+                
+            
+root = Graph_weighted(routes)
+ 
+ 
+#print(root.graph_dict)
+#print(root.weight_dict)
+#print(root.get_path("Lagos","Edo")[i])
+
+final_weights=[[6, 3], [6, 5, 7, 4, 3], [6, 5, 8, 7, 4, 3]]
+final_path = [['Lagos', 'Kwara', 'Edo'], ['Lagos', 'Ogun', 'Ekiti', 'Osun', 'Edo'], ['Lagos', 'Ekiti', 'Osun', 'Edo']]
+for i in range(len(final_weights)):
+            if(len(final_weights[i])>=len(final_path[i])):
+                count = len(final_weights[i])-len(final_path[i])
+                if(count==0):
+                    for j in range(count+1):
+                        del final_weights[i][0]
+                else:
+                    for j in range(count+1):
+                        del final_weights[i][0]
+
+print(final_weights)
